@@ -1,0 +1,153 @@
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  width: 100%;
+  border-bottom: 1px solid var(--color-cyber-border);
+  background-color: rgba(18, 22, 30, 0.92);
+  backdrop-filter: blur(12px);
+}
+
+.container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 16px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+}
+
+.brandLogo {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-md);
+  background: linear-gradient(135deg, var(--color-racing-red), #991b1b);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-racing);
+  font-weight: 700;
+  font-size: 20px;
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(230, 57, 70, 0.3);
+  transition: transform var(--transition-fast);
+}
+
+.brand:hover .brandLogo {
+  transform: scale(1.05);
+}
+
+.brandText {
+  display: flex;
+  flex-direction: column;
+}
+
+.brandTitle {
+  font-family: var(--font-racing);
+  font-weight: 700;
+  font-size: 18px;
+  letter-spacing: 0.05em;
+  color: var(--color-text-primary);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  line-height: 1.2;
+}
+
+.acBadge {
+  font-size: 10px;
+  font-family: var(--font-mono);
+  background-color: var(--color-racing-red-dim);
+  color: var(--color-racing-red);
+  border: 1px solid rgba(230, 57, 70, 0.4);
+  padding: 1px 4px;
+  border-radius: var(--radius-sm);
+}
+
+.brandSubtitle {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+@media (max-width: 768px) {
+  .nav {
+    display: none;
+  }
+}
+
+.navLink {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: var(--radius-md);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--color-text-muted);
+  text-decoration: none;
+  transition: all var(--transition-fast);
+  border: 1px solid transparent;
+}
+
+.navLink:hover {
+  color: var(--color-text-primary);
+  background-color: var(--color-cyber-surface);
+}
+
+.navLinkActive {
+  background-color: var(--color-cyber-surface);
+  color: var(--color-racing-red);
+  border-color: rgba(230, 57, 70, 0.4);
+}
+
+.authSection {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.pilotInfo {
+  display: flex;
+  flex-direction: column;
+  text-align: right;
+}
+
+@media (max-width: 640px) {
+  .pilotInfo {
+    display: none;
+  }
+}
+
+.pilotCallsign {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 4px;
+}
+
+.pilotTier {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--color-emerald);
+}
