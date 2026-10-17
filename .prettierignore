@@ -1,0 +1,7 @@
+dist
+node_modules
+.husky
+cypress/videos
+cypress/screenshots
+build
+package-lock.json
