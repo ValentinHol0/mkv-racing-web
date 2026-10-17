@@ -27,3 +27,5 @@ dist-ssr
 tmp/
 build/
 .cache
+cypress/screenshots/
+cypress/videos/
