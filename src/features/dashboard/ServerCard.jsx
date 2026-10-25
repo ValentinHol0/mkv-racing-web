@@ -1,10 +1,12 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Server, Users, Activity, CloudRain, ShieldCheck, ExternalLink, Cpu } from 'lucide-react';
 import { Button } from '../../components/common/Button';
 import { Badge } from '../../components/common/Badge';
 import styles from './ServerCard.module.css';
 
 export function ServerCard({ server, onConnect }) {
+  const navigate = useNavigate();
   if (!server) return null;
 
   const handleConnect = () => {
@@ -102,11 +104,24 @@ export function ServerCard({ server, onConnect }) {
           <span>Checksum SHA-256 Passed</span>
         </div>
 
-        <Button variant="primary" size="sm" onClick={handleConnect} data-testid="connect-button">
-          <ExternalLink size={14} />
-          <span>Connect (acmanager://)</span>
-        </Button>
+        <div style={{ display: 'flex', gap: '8px' }}>
+          <Button
+            variant="secondary"
+            size="sm"
+            onClick={() => navigate(`/servers/${server.id || 'SRPT-JPN'}`)}
+            data-testid="server-detail-button"
+          >
+            <span>Telemetry</span>
+          </Button>
+
+          <Button variant="primary" size="sm" onClick={handleConnect} data-testid="connect-button">
+            <ExternalLink size={14} />
+            <span>Connect</span>
+          </Button>
+        </div>
       </div>
     </div>
   );
 }
+
+export default ServerCard;
