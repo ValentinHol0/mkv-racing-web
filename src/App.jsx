@@ -9,13 +9,14 @@ import { GaragePage } from './features/garage/GaragePage';
 import { StatisticsPage } from './features/statistics/StatisticsPage';
 import { ProfilePage } from './features/profile/ProfilePage';
 import { LogsPage } from './features/logs/LogsPage';
+import styles from './App.module.css';
 
 export function App() {
   return (
-    <div className="flex flex-col min-h-screen bg-cyber-slate text-slate-100 font-sans selection:bg-racing-red selection:text-white">
+    <div className={styles.appWrapper}>
       <Navbar />
 
-      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
+      <main className={styles.mainContent}>
         <Routes>
           <Route path="/" element={<DashboardPage />} />
           <Route path="/servers" element={<ServersPage />} />

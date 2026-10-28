@@ -1,45 +1,110 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import './variables.css';
 
-@layer base {
-  :root {
-    color-scheme: dark;
-  }
+/* Universal Box-Sizing & Reset */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
 
-  body {
-    @apply bg-cyber-slate text-slate-100 font-sans min-h-screen overflow-x-hidden antialiased;
-    background-image:
-      radial-gradient(circle at 50% 0%, rgba(230, 57, 70, 0.08) 0%, transparent 60%),
-      radial-gradient(circle at 100% 50%, rgba(6, 182, 212, 0.05) 0%, transparent 40%);
-    background-attachment: fixed;
-  }
+html {
+  font-size: 16px;
+  color-scheme: dark;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
 
-  /* Custom Motorsport Scrollbars */
-  ::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
+body {
+  background-color: var(--color-cyber-slate);
+  color: var(--color-text-primary);
+  font-family: var(--font-sans);
+  min-height: 100vh;
+  overflow-x: hidden;
+  line-height: 1.5;
+  background-image:
+    radial-gradient(circle at 50% 0%, rgba(230, 57, 70, 0.08) 0%, transparent 60%),
+    radial-gradient(circle at 100% 50%, rgba(6, 182, 212, 0.05) 0%, transparent 40%);
+  background-attachment: fixed;
+}
+
+/* Text Selection */
+::selection {
+  background-color: var(--color-racing-red);
+  color: #ffffff;
+}
+
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-cyber-slate);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-cyber-border);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-racing-red);
+}
+
+/* Base Typography Defaults */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-racing);
+  color: var(--color-text-primary);
+  letter-spacing: 0.03em;
+  font-weight: 700;
+}
+
+code,
+pre,
+kbd {
+  font-family: var(--font-mono);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+input,
+select,
+textarea {
+  font-family: inherit;
+}
+
+@keyframes pulseGlow {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
   }
-  ::-webkit-scrollbar-track {
-    background: #12161e;
-  }
-  ::-webkit-scrollbar-thumb {
-    background: #242b38;
-    border-radius: 3px;
-  }
-  ::-webkit-scrollbar-thumb:hover {
-    background: #e63946;
+  50% {
+    opacity: 0.6;
+    transform: scale(1.1);
   }
 }
 
-@layer utilities {
-  .glow-red {
-    box-shadow: 0 0 15px rgba(230, 57, 70, 0.35);
+@keyframes spinInfinite {
+  from {
+    transform: rotate(0deg);
   }
-  .glow-emerald {
-    box-shadow: 0 0 15px rgba(16, 185, 129, 0.3);
-  }
-  .glow-cyan {
-    box-shadow: 0 0 15px rgba(6, 182, 212, 0.3);
+  to {
+    transform: rotate(360deg);
   }
 }

@@ -1,0 +1,346 @@
+.pageWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding-bottom: 32px;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 16px;
+  border-bottom: 1px solid var(--color-cyber-border);
+  padding-bottom: 20px;
+}
+
+@media (min-width: 768px) {
+  .header {
+    flex-direction: row;
+    align-items: center;
+  }
+}
+
+.badgeGroup {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.pageTitle {
+  font-family: var(--font-racing);
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+}
+
+.pageSubtitle {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--color-text-muted);
+  margin-top: 4px;
+}
+
+.layoutGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+}
+
+@media (min-width: 1024px) {
+  .layoutGrid {
+    grid-template-columns: 4fr 8fr;
+  }
+}
+
+.catalogColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.columnHeading {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin: 0;
+}
+
+.catalogList {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.carItem {
+  width: 100%;
+  text-align: left;
+  padding: 14px;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-cyber-border);
+  background-color: rgba(21, 26, 35, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: all var(--transition-fast);
+}
+
+.carItem:hover {
+  background-color: var(--color-cyber-surface);
+  border-color: var(--color-text-dim);
+}
+
+.carItemActive {
+  background-color: var(--color-cyber-surface);
+  border-color: var(--color-racing-red);
+  box-shadow: 0 4px 16px rgba(230, 57, 70, 0.15);
+}
+
+.carItemTitle {
+  font-family: var(--font-racing);
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  margin: 0;
+}
+
+.carItemSubtitle {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--color-text-muted);
+  display: block;
+  margin-top: 2px;
+}
+
+.stageColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.stageBox {
+  position: relative;
+  width: 100%;
+  height: 290px;
+  background: linear-gradient(180deg, var(--color-cyber-surface), var(--color-cyber-slate));
+  border: 1px solid var(--color-cyber-border);
+  border-radius: var(--radius-xl);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  box-shadow: var(--shadow-lg);
+  padding: 24px;
+}
+
+.stageGridFloor {
+  position: absolute;
+  inset: 0;
+  opacity: 0.2;
+  background-image:
+    linear-gradient(to right, #242b38 1px, transparent 1px),
+    linear-gradient(to bottom, #242b38 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
+.stageSpotlight {
+  position: absolute;
+  width: 280px;
+  height: 80px;
+  background-color: rgba(230, 57, 70, 0.15);
+  border-radius: 50%;
+  filter: blur(24px);
+  transform: scaleY(0.5);
+  margin-top: 110px;
+}
+
+.stageContent {
+  position: relative;
+  z-index: 10;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.carEmblem {
+  width: 90px;
+  height: 90px;
+  border-radius: var(--radius-xl);
+  background-color: var(--color-cyber-card);
+  border: 1px solid var(--color-cyber-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-md);
+  color: var(--color-racing-red);
+}
+
+.stageBadgeTop {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--color-cyan);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.stageCarName {
+  font-family: var(--font-racing);
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  margin: 4px 0 2px 0;
+}
+
+.stageLiveryLabel {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--color-text-muted);
+}
+
+.stageLiveryValue {
+  color: var(--color-text-primary);
+  font-weight: 600;
+}
+
+.stageChecksumPos {
+  position: absolute;
+  bottom: 16px;
+  right: 16px;
+  z-index: 10;
+}
+
+.panelCard {
+  background-color: var(--color-cyber-surface);
+  border: 1px solid var(--color-cyber-border);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.panelTitle {
+  font-family: var(--font-racing);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--color-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+}
+
+.liveriesRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.liveryBtn {
+  padding: 6px 12px;
+  border-radius: var(--radius-md);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  border: 1px solid var(--color-cyber-border);
+  background-color: var(--color-cyber-card);
+  color: var(--color-text-muted);
+  transition: all var(--transition-fast);
+}
+
+.liveryBtn:hover {
+  color: var(--color-text-primary);
+}
+
+.liveryBtnActive {
+  background-color: var(--color-racing-red);
+  border-color: var(--color-racing-red);
+  color: #ffffff;
+  font-weight: 700;
+  box-shadow: 0 0 10px rgba(230, 57, 70, 0.4);
+}
+
+.specsGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+}
+
+@media (min-width: 640px) {
+  .specsGrid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.specBox {
+  background-color: var(--color-cyber-card);
+  padding: 12px;
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(36, 43, 56, 0.7);
+}
+
+.specBoxLabel {
+  font-size: 10px;
+  color: var(--color-text-dim);
+  display: block;
+}
+
+.specBoxValue {
+  font-family: var(--font-racing);
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  margin-top: 2px;
+  display: block;
+}
+
+.specBoxAccel {
+  color: var(--color-emerald);
+}
+
+.specBoxSpeed {
+  color: var(--color-cyan);
+}
+
+.specBoxDrivetrain {
+  color: var(--color-amber);
+}
+
+.panelFooter {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(36, 43, 56, 0.7);
+}
+
+@media (min-width: 640px) {
+  .panelFooter {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+.checksumNote {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--color-text-muted);
+}

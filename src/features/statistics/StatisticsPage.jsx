@@ -2,6 +2,7 @@ import React from 'react';
 import { LineChart, Timer, Activity, ShieldCheck } from 'lucide-react';
 import { useAppStore } from '../../store/useAppStore';
 import { Badge } from '../../components/common/Badge';
+import styles from './StatisticsPage.module.css';
 
 export function StatisticsPage() {
   const { telemetry } = useAppStore();
@@ -34,88 +35,79 @@ export function StatisticsPage() {
   ];
 
   return (
-    <div className="space-y-6 pb-8" data-testid="statistics-page">
+    <div className={styles.pageWrapper} data-testid="statistics-page">
       {/* Header */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-cyber-border pb-5">
+      <div className={styles.header}>
         <div>
-          <div className="flex items-center gap-2 mb-1.5">
+          <div className={styles.badgeGroup}>
             <Badge variant="emerald">CSP TELEMETRY RECORDER</Badge>
             <Badge variant="online" dot>
               LIVE SAMPLING (40Hz)
             </Badge>
           </div>
-          <h1 className="text-2xl font-racing font-bold text-slate-100 tracking-wide flex items-center gap-2.5">
-            <LineChart className="w-6 h-6 text-racing-red" />
+          <h1 className={styles.pageTitle}>
+            <LineChart size={24} color="#e63946" />
             TELEMETRY ANALYTICS & SECTOR TIMINGS
           </h1>
-          <p className="text-xs font-mono text-slate-400 mt-1">
+          <p className={styles.pageSubtitle}>
             Lateral G curves, Shuto C1 loop sector splits, and pilot safety rating index
           </p>
         </div>
       </div>
 
       {/* KPI Top Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="bg-cyber-surface border border-cyber-border rounded-xl p-4">
-          <span className="text-[10px] font-mono text-slate-400 block">BEST LAP (SHUTO C1)</span>
-          <span className="text-2xl font-racing font-bold text-slate-100">3:48.210</span>
-          <span className="text-[10px] font-mono text-emerald-400 mt-1 block">
+      <div className={styles.kpiGrid}>
+        <div className={styles.kpiCard}>
+          <span className={styles.kpiLabel}>BEST LAP (SHUTO C1)</span>
+          <span className={styles.kpiValue}>3:48.210</span>
+          <span className={styles.kpiSub} style={{ color: 'var(--color-emerald)' }}>
             Personal Record • Toyota Supra MKV
           </span>
         </div>
 
-        <div className="bg-cyber-surface border border-cyber-border rounded-xl p-4">
-          <span className="text-[10px] font-mono text-slate-400 block">PEAK LATERAL G</span>
-          <span className="text-2xl font-racing font-bold text-cyan-400">1.68 G</span>
-          <span className="text-[10px] font-mono text-slate-400 mt-1 block">
-            Rainbow Bridge entry curve
-          </span>
+        <div className={styles.kpiCard}>
+          <span className={styles.kpiLabel}>PEAK LATERAL G</span>
+          <span className={`${styles.kpiValue} ${styles.kpiValueCyan}`}>1.68 G</span>
+          <span className={styles.kpiSub}>Rainbow Bridge entry curve</span>
         </div>
 
-        <div className="bg-cyber-surface border border-cyber-border rounded-xl p-4">
-          <span className="text-[10px] font-mono text-slate-400 block">SAFETY RATING INDEX</span>
-          <span className="text-2xl font-racing font-bold text-emerald-400">98.4%</span>
-          <span className="text-[10px] font-mono text-slate-400 mt-1 block">
-            0 incidents across 14 sessions
-          </span>
+        <div className={styles.kpiCard}>
+          <span className={styles.kpiLabel}>SAFETY RATING INDEX</span>
+          <span className={`${styles.kpiValue} ${styles.kpiValueEmerald}`}>98.4%</span>
+          <span className={styles.kpiSub}>0 incidents across 14 sessions</span>
         </div>
 
-        <div className="bg-cyber-surface border border-cyber-border rounded-xl p-4">
-          <span className="text-[10px] font-mono text-slate-400 block">MAX SPEED LOGGED</span>
-          <span className="text-2xl font-racing font-bold text-racing-red">324 km/h</span>
-          <span className="text-[10px] font-mono text-slate-400 mt-1 block">
-            Bayshore Straight 6th Gear
-          </span>
+        <div className={styles.kpiCard}>
+          <span className={styles.kpiLabel}>MAX SPEED LOGGED</span>
+          <span className={`${styles.kpiValue} ${styles.kpiValueRed}`}>324 km/h</span>
+          <span className={styles.kpiSub}>Bayshore Straight 6th Gear</span>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className={styles.mainGrid}>
         {/* Shuto C1 Sector Timing Splits */}
-        <div className="bg-cyber-surface border border-cyber-border rounded-xl p-5 shadow-lg space-y-4">
-          <div className="flex items-center justify-between">
-            <h3 className="text-sm font-racing font-bold text-slate-100 uppercase tracking-wider flex items-center gap-2">
-              <Timer className="w-4 h-4 text-cyan-400" />
+        <div className={styles.panelCard}>
+          <div className={styles.panelHeader}>
+            <h3 className={styles.panelTitle}>
+              <Timer size={16} color="#06b6d4" />
               Shuto Expressway C1 Sector Breakdown
             </h3>
             <Badge variant="cyan">GPS GAUGE</Badge>
           </div>
 
-          <div className="space-y-2.5">
+          <div className={styles.sectorsList}>
             {sectorSplits.map((item, index) => (
-              <div
-                key={index}
-                className="p-3 bg-cyber-card/70 border border-cyber-border/60 rounded-lg flex items-center justify-between text-xs font-mono"
-              >
+              <div key={index} className={styles.sectorItem}>
                 <div>
-                  <span className="text-slate-200 font-medium block">{item.sector}</span>
-                  <span className="text-[10px] text-slate-500">Benchmark comparison</span>
+                  <span className={styles.sectorName}>{item.sector}</span>
+                  <span className={styles.sectorSub}>Benchmark comparison</span>
                 </div>
-                <div className="text-right">
-                  <span className="text-slate-100 font-bold block">{item.time}</span>
+                <div className={styles.sectorRight}>
+                  <span className={styles.sectorTime}>{item.time}</span>
                   <span
-                    className={`text-[11px] font-bold ${
-                      item.delta.startsWith('-') ? 'text-emerald-400' : 'text-amber-400'
-                    }`}
+                    className={
+                      item.delta.startsWith('-') ? styles.deltaOptimal : styles.deltaCaution
+                    }
                   >
                     {item.delta}
                   </span>
@@ -124,17 +116,17 @@ export function StatisticsPage() {
             ))}
           </div>
 
-          <div className="p-3 bg-cyber-slate rounded-lg border border-cyber-border text-xs font-mono text-slate-400 flex items-center justify-between">
+          <div className={styles.theoreticalBest}>
             <span>Theoretical Best Time:</span>
-            <strong className="text-emerald-400 text-sm">3:47.510</strong>
+            <strong className={styles.theoreticalTime}>3:47.510</strong>
           </div>
         </div>
 
         {/* Lateral G & Telemetry Curve Display */}
-        <div className="bg-cyber-surface border border-cyber-border rounded-xl p-5 shadow-lg space-y-4">
-          <div className="flex items-center justify-between">
-            <h3 className="text-sm font-racing font-bold text-slate-100 uppercase tracking-wider flex items-center gap-2">
-              <Activity className="w-4 h-4 text-racing-red" />
+        <div className={styles.panelCard}>
+          <div className={styles.panelHeader}>
+            <h3 className={styles.panelTitle}>
+              <Activity size={16} color="#e63946" />
               Live Lateral G Telemetry Stream
             </h3>
             <Badge variant="online" dot>
@@ -143,58 +135,56 @@ export function StatisticsPage() {
           </div>
 
           {/* Visual G-Force Bar Chart Representation */}
-          <div className="space-y-3 font-mono text-xs">
+          <div className={styles.gForceGrid}>
             <div>
-              <div className="flex justify-between text-slate-400 mb-1">
+              <div className={styles.gForceHeader}>
                 <span>Left Turn Cornering G</span>
-                <span className="text-cyan-400 font-bold">
+                <span style={{ color: 'var(--color-cyan)', fontWeight: 'bold' }}>
                   {Math.max(0, (telemetry.lateralG - 0.5).toFixed(2))} G
                 </span>
               </div>
-              <div className="w-full h-3 bg-cyber-slate rounded border border-cyber-border overflow-hidden">
+              <div className={styles.gBarTrack}>
                 <div
-                  className="h-full bg-cyan-400 transition-all duration-75"
+                  className={styles.gBarCyan}
                   style={{ width: `${Math.min(100, (telemetry.lateralG / 2) * 100)}%` }}
                 />
               </div>
             </div>
 
             <div>
-              <div className="flex justify-between text-slate-400 mb-1">
+              <div className={styles.gForceHeader}>
                 <span>Right Turn Cornering G</span>
-                <span className="text-emerald-400 font-bold">
+                <span style={{ color: 'var(--color-emerald)', fontWeight: 'bold' }}>
                   {Math.max(0, (2 - telemetry.lateralG).toFixed(2))} G
                 </span>
               </div>
-              <div className="w-full h-3 bg-cyber-slate rounded border border-cyber-border overflow-hidden">
+              <div className={styles.gBarTrack}>
                 <div
-                  className="h-full bg-emerald-400 transition-all duration-75"
+                  className={styles.gBarEmerald}
                   style={{ width: `${Math.min(100, ((2 - telemetry.lateralG) / 2) * 100)}%` }}
                 />
               </div>
             </div>
 
             <div>
-              <div className="flex justify-between text-slate-400 mb-1">
+              <div className={styles.gForceHeader}>
                 <span>Throttle Telemetry Level</span>
-                <span className="text-racing-red font-bold">
+                <span style={{ color: 'var(--color-racing-red)', fontWeight: 'bold' }}>
                   {Math.round((telemetry.speed / 340) * 100)}%
                 </span>
               </div>
-              <div className="w-full h-3 bg-cyber-slate rounded border border-cyber-border overflow-hidden">
+              <div className={styles.gBarTrack}>
                 <div
-                  className="h-full bg-racing-red transition-all duration-75"
+                  className={styles.gBarRed}
                   style={{ width: `${(telemetry.speed / 340) * 100}%` }}
                 />
               </div>
             </div>
           </div>
 
-          <div className="pt-2 border-t border-cyber-border/70 flex items-center justify-between text-xs font-mono text-slate-400">
-            <span className="flex items-center gap-1.5">
-              <ShieldCheck className="w-4 h-4 text-emerald-400" />
-              Tire Temp: FL 88°C • FR 91°C • RL 94°C • RR 93°C
-            </span>
+          <div className={styles.tireTempFooter}>
+            <ShieldCheck size={16} color="#10b981" />
+            <span>Tire Temp: FL 88°C • FR 91°C • RL 94°C • RR 93°C</span>
           </div>
         </div>
       </div>

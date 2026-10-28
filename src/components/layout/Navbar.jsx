@@ -14,6 +14,7 @@ import {
 import { useAppStore } from '../../store/useAppStore';
 import { Button } from '../common/Button';
 import { Badge } from '../common/Badge';
+import styles from './Navbar.module.css';
 
 export function Navbar() {
   const { isAuthenticated, user, openAuthModal, logout } = useAppStore();
@@ -28,28 +29,22 @@ export function Navbar() {
   ];
 
   return (
-    <header className="sticky top-0 z-40 w-full border-b border-cyber-border bg-cyber-slate/90 backdrop-blur-md">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+    <header className={styles.header}>
+      <div className={styles.container}>
         {/* Brand Logo */}
-        <NavLink to="/" className="flex items-center gap-3 group">
-          <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-racing-red to-red-800 flex items-center justify-center font-racing font-bold text-xl text-white shadow-lg shadow-racing-red/20 group-hover:scale-105 transition-transform">
-            MKV
-          </div>
-          <div className="flex flex-col">
-            <span className="font-racing font-bold text-lg tracking-wider text-slate-100 flex items-center gap-1.5">
+        <NavLink to="/" className={styles.brand}>
+          <div className={styles.brandLogo}>MKV</div>
+          <div className={styles.brandText}>
+            <span className={styles.brandTitle}>
               MKV RACING
-              <span className="text-[10px] bg-racing-red/20 text-racing-red border border-racing-red/30 px-1 rounded font-mono">
-                AC
-              </span>
+              <span className={styles.acBadge}>AC</span>
             </span>
-            <span className="text-[10px] font-mono text-slate-400 uppercase tracking-widest -mt-1">
-              Telemetry & Infrastructure
-            </span>
+            <span className={styles.brandSubtitle}>Telemetry & Infrastructure</span>
           </div>
         </NavLink>
 
         {/* Navigation Links */}
-        <nav className="hidden md:flex items-center gap-1">
+        <nav className={styles.nav}>
           {navLinks.map((link) => {
             const Icon = link.icon;
             return (
@@ -57,14 +52,10 @@ export function Navbar() {
                 key={link.to}
                 to={link.to}
                 className={({ isActive }) =>
-                  `flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-mono tracking-wider transition-colors ${
-                    isActive
-                      ? 'bg-cyber-surface text-racing-red border border-racing-red/40'
-                      : 'text-slate-400 hover:text-slate-200 hover:bg-cyber-surface/50'
-                  }`
+                  `${styles.navLink} ${isActive ? styles.navLinkActive : ''}`
                 }
               >
-                <Icon className="w-4 h-4" />
+                <Icon size={16} />
                 {link.label}
               </NavLink>
             );
@@ -72,17 +63,15 @@ export function Navbar() {
         </nav>
 
         {/* Auth CTA / User Profile */}
-        <div className="flex items-center gap-3">
+        <div className={styles.authSection}>
           {isAuthenticated ? (
-            <div className="flex items-center gap-3">
-              <div className="hidden sm:flex flex-col text-right">
-                <span className="text-xs font-mono font-medium text-slate-200 flex items-center justify-end gap-1">
-                  <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
+            <div className={styles.authSection}>
+              <div className={styles.pilotInfo}>
+                <span className={styles.pilotCallsign}>
+                  <ShieldCheck size={14} color="#10b981" />
                   {user?.callsign || user?.name}
                 </span>
-                <span className="text-[10px] font-mono text-emerald-400">
-                  {user?.tier || 'Level 42 Pro Tier'}
-                </span>
+                <span className={styles.pilotTier}>{user?.tier || 'Level 42 Pro Tier'}</span>
               </div>
               <Badge variant="online" dot>
                 ONLINE
@@ -94,12 +83,12 @@ export function Navbar() {
                 title="Log out"
                 data-testid="logout-btn"
               >
-                <LogOut className="w-3.5 h-3.5" />
-                <span className="hidden sm:inline">Exit</span>
+                <LogOut size={14} />
+                <span>Exit</span>
               </Button>
             </div>
           ) : (
-            <div className="flex items-center gap-2">
+            <div className={styles.authSection}>
               <Badge variant="warning">GUEST</Badge>
               <Button
                 variant="primary"
@@ -107,7 +96,7 @@ export function Navbar() {
                 onClick={openAuthModal}
                 data-testid="open-auth-btn"
               >
-                <LogIn className="w-3.5 h-3.5" />
+                <LogIn size={14} />
                 <span>Pilot Auth</span>
               </Button>
             </div>

@@ -1,0 +1,87 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+
+.backdrop {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(4px);
+  cursor: pointer;
+  animation: fadeIn 200ms ease-out;
+}
+
+.dialog {
+  position: relative;
+  width: 100%;
+  max-width: 480px;
+  background-color: var(--color-cyber-surface);
+  border: 1px solid var(--color-cyber-border);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-lg);
+  overflow: hidden;
+  z-index: 10;
+  animation: scaleIn 200ms ease-out;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 24px;
+  border-bottom: 1px solid var(--color-cyber-border);
+}
+
+.title {
+  font-family: var(--font-racing);
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  letter-spacing: 0.05em;
+  margin: 0;
+}
+
+.closeButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+  border-radius: var(--radius-sm);
+  color: var(--color-text-muted);
+  transition: all var(--transition-fast);
+}
+
+.closeButton:hover {
+  color: var(--color-text-primary);
+  background-color: var(--color-cyber-card);
+}
+
+.body {
+  padding: 24px;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
