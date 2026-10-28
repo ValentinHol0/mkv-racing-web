@@ -1,0 +1,225 @@
+.pageWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding-bottom: 32px;
+}
+
+.profileBanner {
+  background: linear-gradient(
+    135deg,
+    var(--color-cyber-surface),
+    var(--color-cyber-card),
+    var(--color-cyber-surface)
+  );
+  border: 1px solid var(--color-cyber-border);
+  border-radius: var(--radius-xl);
+  padding: 24px;
+  box-shadow: var(--shadow-lg);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+@media (min-width: 768px) {
+  .profileBanner {
+    flex-direction: row;
+    align-items: center;
+  }
+}
+
+.pilotIdentity {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: var(--radius-xl);
+  background: linear-gradient(135deg, var(--color-racing-red), #450a0a);
+  border: 1px solid rgba(230, 57, 70, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-racing);
+  font-size: 30px;
+  font-weight: 700;
+  color: #ffffff;
+  box-shadow: 0 4px 16px rgba(230, 57, 70, 0.25);
+  flex-shrink: 0;
+}
+
+.badgeGroup {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.callsign {
+  font-family: var(--font-racing);
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  margin: 0;
+}
+
+.pilotMeta {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--color-text-muted);
+}
+
+.capsuleContainer {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background-color: rgba(18, 22, 30, 0.9);
+  padding: 14px 18px;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-cyber-border);
+  font-family: var(--font-mono);
+  font-size: 12px;
+}
+
+.capsuleItem {
+  display: flex;
+  flex-direction: column;
+}
+
+.capsuleLabel {
+  font-size: 10px;
+  color: var(--color-text-muted);
+  display: block;
+}
+
+.capsuleValue {
+  font-family: var(--font-racing);
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.capsuleDivider {
+  height: 32px;
+  width: 1px;
+  background-color: var(--color-cyber-border);
+}
+
+.contentGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+}
+
+@media (min-width: 1024px) {
+  .contentGrid {
+    grid-template-columns: 5fr 7fr;
+  }
+}
+
+.panelCard {
+  background-color: var(--color-cyber-surface);
+  border: 1px solid var(--color-cyber-border);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  box-shadow: var(--shadow-md);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.panelHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.panelTitle {
+  font-family: var(--font-racing);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--color-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+}
+
+.panelDesc {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--color-text-muted);
+  line-height: 1.4;
+}
+
+.licensesList {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-top: 8px;
+  border-top: 1px solid rgba(36, 43, 56, 0.7);
+  font-family: var(--font-mono);
+  font-size: 12px;
+}
+
+.licenseItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 10px;
+  background-color: rgba(21, 26, 35, 0.6);
+  border-radius: var(--radius-sm);
+  border: 1px solid rgba(36, 43, 56, 0.4);
+  color: var(--color-text-secondary);
+}
+
+.fleetList {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+}
+
+.fleetRow {
+  padding: 12px;
+  background-color: rgba(21, 26, 35, 0.7);
+  border: 1px solid rgba(36, 43, 56, 0.6);
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.carName {
+  font-family: var(--font-racing);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  margin: 0;
+}
+
+.carTopSpeed {
+  font-size: 10px;
+  color: var(--color-text-muted);
+}
+
+.fleetRight {
+  text-align: right;
+}
+
+.fleetDist {
+  color: var(--color-emerald);
+  font-weight: 700;
+  display: block;
+}
+
+.fleetWins {
+  font-size: 10px;
+  color: var(--color-amber);
+}

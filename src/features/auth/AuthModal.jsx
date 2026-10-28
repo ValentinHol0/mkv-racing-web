@@ -4,6 +4,7 @@ import { Modal } from '../../components/common/Modal';
 import { Input } from '../../components/common/Input';
 import { Button } from '../../components/common/Button';
 import { useAppStore } from '../../store/useAppStore';
+import styles from './AuthModal.module.css';
 
 export function AuthModal({ isOpen, onClose, onLoginSuccess }) {
   const [email, setEmail] = useState('');
@@ -80,8 +81,8 @@ export function AuthModal({ isOpen, onClose, onLoginSuccess }) {
 
   return (
     <Modal isOpen={openState} onClose={handleClose} title="MKV RACING PILOT AUTHENTICATION">
-      <div className="space-y-5" data-testid="auth-modal">
-        <p className="text-xs font-mono text-slate-400">
+      <div className={styles.authModalContent} data-testid="auth-modal">
+        <p className={styles.authSubtitle}>
           Sign in via Steam OpenID 2.0 to sync Kunos licenses, or enter your pilot credentials.
         </p>
 
@@ -93,18 +94,18 @@ export function AuthModal({ isOpen, onClose, onLoginSuccess }) {
           onClick={handleSteamLogin}
           data-testid="steam-sso-btn"
         >
-          <Key className="w-4 h-4 text-cyan-400" />
+          <Key size={16} color="#06b6d4" />
           <span>Sign In With Steam OpenID 2.0</span>
         </Button>
 
-        <div className="flex items-center gap-3">
-          <div className="h-px bg-cyber-border flex-1" />
-          <span className="text-[10px] font-mono text-slate-500 uppercase">OR VIA CREDENTIALS</span>
-          <div className="h-px bg-cyber-border flex-1" />
+        <div className={styles.dividerContainer}>
+          <div className={styles.dividerLine} />
+          <span className={styles.dividerText}>OR VIA CREDENTIALS</span>
+          <div className={styles.dividerLine} />
         </div>
 
         {/* Traditional Credentials Form */}
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className={styles.form}>
           <Input
             id="auth-email-input"
             label="Pilot Email / Callsign"
@@ -129,7 +130,7 @@ export function AuthModal({ isOpen, onClose, onLoginSuccess }) {
             data-testid="password-input"
           />
 
-          <div className="pt-2 flex items-center justify-between gap-3">
+          <div className={styles.formActions}>
             <Button
               type="button"
               variant="secondary"
@@ -147,7 +148,7 @@ export function AuthModal({ isOpen, onClose, onLoginSuccess }) {
               disabled={loading}
               data-testid="login-submit-btn"
             >
-              <ShieldCheck className="w-3.5 h-3.5" />
+              <ShieldCheck size={14} />
               <span>{loading ? 'Authenticating...' : 'Authorize Pilot'}</span>
             </Button>
           </div>

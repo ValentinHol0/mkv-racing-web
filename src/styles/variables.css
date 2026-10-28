@@ -1,0 +1,52 @@
+:root {
+  /* Surface & Background Colors */
+  --color-cyber-slate: #12161e;
+  --color-cyber-surface: #181d26;
+  --color-cyber-border: #242b38;
+  --color-cyber-card: #151a23;
+  --color-cyber-card-hover: #1f2532;
+
+  /* Brand Motorsport Colors */
+  --color-racing-red: #e63946;
+  --color-racing-red-hover: #d62839;
+  --color-racing-red-dim: rgba(230, 57, 70, 0.15);
+
+  /* Telemetry Status Colors */
+  --color-emerald: #10b981;
+  --color-emerald-dim: rgba(16, 185, 129, 0.15);
+  --color-cyan: #06b6d4;
+  --color-cyan-dim: rgba(6, 182, 212, 0.15);
+  --color-amber: #f59e0b;
+  --color-amber-dim: rgba(245, 158, 11, 0.15);
+  --color-purple: #8b5cf6;
+
+  /* Typography Colors */
+  --color-text-primary: #f8fafc;
+  --color-text-secondary: #cbd5e1;
+  --color-text-muted: #94a3b8;
+  --color-text-dim: #64748b;
+
+  /* Typography Font Families */
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-racing: 'Rajdhani', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'JetBrains Mono', Menlo, Monaco, Consolas, monospace;
+
+  /* Border Radii */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-full: 9999px;
+
+  /* Shadows & Glows */
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.2);
+  --shadow-md: 0 4px 10px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.4);
+  --shadow-glow-red: 0 0 18px rgba(230, 57, 70, 0.35);
+  --shadow-glow-emerald: 0 0 15px rgba(16, 185, 129, 0.3);
+  --shadow-glow-cyan: 0 0 15px rgba(6, 182, 212, 0.3);
+
+  /* Transitions */
+  --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-normal: 250ms cubic-bezier(0.4, 0, 0.2, 1);
+}

@@ -1,0 +1,102 @@
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-sans);
+  font-weight: 600;
+  border-radius: var(--radius-md);
+  transition: all var(--transition-fast);
+  cursor: pointer;
+  user-select: none;
+  border: 1px solid transparent;
+  outline: none;
+  white-space: nowrap;
+}
+
+.button:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.fullWidth {
+  width: 100%;
+}
+
+/* Sizes */
+.size_sm {
+  padding: 6px 12px;
+  font-size: 12px;
+  gap: 6px;
+}
+
+.size_md {
+  padding: 8px 16px;
+  font-size: 14px;
+  gap: 8px;
+}
+
+.size_lg {
+  padding: 12px 24px;
+  font-size: 16px;
+  gap: 10px;
+}
+
+/* Variants */
+.variant_primary {
+  background-color: var(--color-racing-red);
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(230, 57, 70, 0.25);
+}
+
+.variant_primary:hover:not(:disabled) {
+  background-color: var(--color-racing-red-hover);
+  box-shadow: var(--shadow-glow-red);
+}
+
+.variant_secondary {
+  background-color: var(--color-cyber-surface);
+  border-color: var(--color-cyber-border);
+  color: var(--color-text-secondary);
+}
+
+.variant_secondary:hover:not(:disabled) {
+  background-color: var(--color-cyber-card-hover);
+  border-color: var(--color-text-dim);
+  color: var(--color-text-primary);
+}
+
+.variant_steam {
+  background-color: #1e293b;
+  border-color: #334155;
+  color: var(--color-text-primary);
+  box-shadow: var(--shadow-sm);
+}
+
+.variant_steam:hover:not(:disabled) {
+  background-color: #334155;
+  border-color: var(--color-cyan);
+}
+
+.variant_outline {
+  border-color: var(--color-racing-red);
+  color: var(--color-racing-red);
+  background-color: transparent;
+}
+
+.variant_outline:hover:not(:disabled) {
+  background-color: var(--color-racing-red-dim);
+}
+
+.variant_ghost {
+  color: var(--color-text-muted);
+  background-color: transparent;
+}
+
+.variant_ghost:hover:not(:disabled) {
+  color: var(--color-text-primary);
+  background-color: var(--color-cyber-surface);
+}

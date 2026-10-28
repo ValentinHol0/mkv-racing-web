@@ -1,0 +1,182 @@
+.card {
+  background-color: var(--color-cyber-surface);
+  border: 1px solid var(--color-cyber-border);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  box-shadow: var(--shadow-md);
+  transition: all var(--transition-normal);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.card:hover {
+  border-color: rgba(230, 57, 70, 0.6);
+  box-shadow: 0 8px 24px rgba(230, 57, 70, 0.12);
+}
+
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.headerLeft {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.serverIcon {
+  padding: 10px;
+  border-radius: var(--radius-md);
+  background-color: var(--color-cyber-card);
+  border: 1px solid var(--color-cyber-border);
+  color: var(--color-racing-red);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.title {
+  font-family: var(--font-racing);
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  letter-spacing: 0.03em;
+  margin: 0;
+  line-height: 1.3;
+}
+
+.subtitle {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--color-text-muted);
+  margin-top: 2px;
+}
+
+.region {
+  color: var(--color-text-secondary);
+}
+
+.metricsGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  padding: 12px 0;
+  border-top: 1px solid rgba(36, 43, 56, 0.7);
+  border-bottom: 1px solid rgba(36, 43, 56, 0.7);
+  font-family: var(--font-mono);
+  font-size: 12px;
+}
+
+@media (min-width: 640px) {
+  .metricsGrid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.metricBox {
+  background-color: rgba(21, 26, 35, 0.6);
+  padding: 8px;
+  border-radius: var(--radius-sm);
+  border: 1px solid rgba(36, 43, 56, 0.5);
+}
+
+.metricLabel {
+  color: var(--color-text-muted);
+  font-size: 10px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.metricValue {
+  color: var(--color-text-primary);
+  font-weight: 700;
+  margin-top: 2px;
+  display: block;
+}
+
+.metricValueSub {
+  font-size: 10px;
+  color: var(--color-text-dim);
+  font-weight: 400;
+}
+
+.pingValue {
+  color: var(--color-emerald);
+  font-weight: 700;
+  margin-top: 2px;
+  display: block;
+}
+
+.weatherValue {
+  color: var(--color-text-secondary);
+  font-size: 11px;
+  font-weight: 500;
+  margin-top: 2px;
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.loadContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.loadLabels {
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--color-text-muted);
+}
+
+.loadTrack {
+  width: 100%;
+  height: 6px;
+  background-color: var(--color-cyber-card);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+  border: 1px solid var(--color-cyber-border);
+}
+
+.loadBar {
+  height: 100%;
+  transition: width 500ms ease;
+}
+
+.loadGreen {
+  background-color: var(--color-emerald);
+}
+
+.loadYellow {
+  background-color: var(--color-amber);
+}
+
+.loadRed {
+  background-color: var(--color-racing-red);
+}
+
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-top: 4px;
+}
+
+.checksumNote {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--color-text-muted);
+}

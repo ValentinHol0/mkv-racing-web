@@ -1,4 +1,5 @@
 import React from 'react';
+import styles from './Input.module.css';
 
 export function Input({
   label,
@@ -13,35 +14,28 @@ export function Input({
   const inputId = id || (label ? label.toLowerCase().replace(/\s+/g, '-') : undefined);
 
   return (
-    <div className={`flex flex-col gap-1.5 ${wrapperClassName}`}>
+    <div className={`${styles.wrapper} ${wrapperClassName}`}>
       {label && (
-        <label
-          htmlFor={inputId}
-          className="text-xs font-mono font-medium text-slate-300 tracking-wider uppercase"
-        >
+        <label htmlFor={inputId} className={styles.label}>
           {label}
         </label>
       )}
-      <div className="relative">
+      <div className={styles.inputContainer}>
         {Icon && (
-          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-500">
-            <Icon className="w-4 h-4" />
+          <div className={styles.icon}>
+            <Icon size={16} />
           </div>
         )}
         <input
           id={inputId}
           type={type}
-          className={`w-full bg-cyber-slate border ${
-            error
-              ? 'border-red-500 focus:border-red-500'
-              : 'border-cyber-border focus:border-racing-red'
-          } rounded-lg px-3.5 py-2.5 text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-1 focus:ring-racing-red transition-all ${
-            Icon ? 'pl-9' : ''
+          className={`${styles.input} ${Icon ? styles.hasIcon : ''} ${
+            error ? styles.inputError : ''
           } ${className}`}
           {...props}
         />
       </div>
-      {error && <span className="text-xs text-red-400 font-mono mt-0.5">{error}</span>}
+      {error && <span className={styles.errorMessage}>{error}</span>}
     </div>
   );
 }

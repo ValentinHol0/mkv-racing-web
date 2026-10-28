@@ -1,0 +1,241 @@
+.pageWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding-bottom: 32px;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 16px;
+  border-bottom: 1px solid var(--color-cyber-border);
+  padding-bottom: 20px;
+}
+
+@media (min-width: 768px) {
+  .header {
+    flex-direction: row;
+    align-items: center;
+  }
+}
+
+.badgeGroup {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.pageTitle {
+  font-family: var(--font-racing);
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+}
+
+.pageSubtitle {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--color-text-muted);
+  margin-top: 4px;
+}
+
+.filterBar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background-color: var(--color-cyber-surface);
+  padding: 6px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-cyber-border);
+}
+
+.filterBtn {
+  padding: 6px 12px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  border-radius: var(--radius-sm);
+  color: var(--color-text-muted);
+  transition: all var(--transition-fast);
+}
+
+.filterBtn:hover {
+  color: var(--color-text-primary);
+}
+
+.filterBtnActive {
+  background-color: var(--color-racing-red);
+  color: #ffffff;
+  font-weight: 700;
+}
+
+.metricsStrip {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+}
+
+@media (min-width: 640px) {
+  .metricsStrip {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.metricCard {
+  background-color: var(--color-cyber-surface);
+  border: 1px solid var(--color-cyber-border);
+  border-radius: var(--radius-lg);
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.metricLeft {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.metricIconBox {
+  padding: 8px;
+  border-radius: var(--radius-md);
+  background-color: var(--color-cyber-card);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.metricLabel {
+  font-size: 10px;
+  color: var(--color-text-muted);
+  display: block;
+}
+
+.metricValue {
+  font-family: var(--font-racing);
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  line-height: 1.2;
+}
+
+.terminalWindow {
+  background-color: #05070a;
+  border: 1px solid var(--color-cyber-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  overflow: hidden;
+  font-family: var(--font-mono);
+}
+
+.terminalHeader {
+  padding: 10px 16px;
+  background-color: var(--color-cyber-card);
+  border-bottom: 1px solid var(--color-cyber-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.macDots {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.dotRed {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: #ef4444;
+}
+
+.dotYellow {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: #f59e0b;
+}
+
+.dotGreen {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: #10b981;
+}
+
+.terminalTitle {
+  font-size: 12px;
+  color: var(--color-text-muted);
+  margin-left: 8px;
+}
+
+.logsViewport {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 380px;
+  min-height: 240px;
+  overflow-y: auto;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.logRow {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 4px 8px;
+  border-radius: var(--radius-sm);
+  transition: background-color var(--transition-fast);
+}
+
+.logRow:hover {
+  background-color: rgba(255, 255, 255, 0.04);
+}
+
+.logTime {
+  color: var(--color-text-dim);
+  font-size: 11px;
+  flex-shrink: 0;
+  user-select: none;
+}
+
+.logMessage {
+  color: var(--color-text-secondary);
+  word-break: break-all;
+}
+
+.cmdForm {
+  padding: 12px 16px;
+  background-color: var(--color-cyber-surface);
+  border-top: 1px solid var(--color-cyber-border);
+  display: flex;
+  gap: 8px;
+}
+
+.cmdInput {
+  flex: 1;
+  background-color: var(--color-cyber-slate);
+  border: 1px solid var(--color-cyber-border);
+  border-radius: var(--radius-md);
+  padding: 8px 12px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--color-text-primary);
+  outline: none;
+}
+
+.cmdInput:focus {
+  border-color: var(--color-racing-red);
+}
