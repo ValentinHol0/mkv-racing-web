@@ -3,6 +3,7 @@ import { Routes, Route } from 'react-router-dom';
 import { Navbar } from './components/layout/Navbar';
 import { Footer } from './components/layout/Footer';
 import { AuthModal } from './features/auth/AuthModal';
+import { AuthPage } from './features/auth/AuthPage';
 import { DashboardPage } from './features/dashboard/DashboardPage';
 import { ServersPage } from './features/servers/ServersPage';
 import { ServerDetailPage } from './features/servers/ServerDetailPage';
@@ -27,6 +28,8 @@ export function App() {
           <Route path="/statistics" element={<StatisticsPage />} />
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/logs" element={<LogsPage />} />
+          <Route path="/login" element={<AuthPage />} />
+          <Route path="/auth" element={<AuthPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </main>

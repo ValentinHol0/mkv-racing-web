@@ -17,7 +17,7 @@ import { Badge } from '../common/Badge';
 import styles from './Navbar.module.css';
 
 export function Navbar() {
-  const { isAuthenticated, user, openAuthModal, logout } = useAppStore();
+  const { isAuthenticated, user, logout } = useAppStore();
 
   const navLinks = [
     { to: '/', label: 'Dashboard', icon: Gauge },
@@ -90,15 +90,12 @@ export function Navbar() {
           ) : (
             <div className={styles.authSection}>
               <Badge variant="warning">GUEST</Badge>
-              <Button
-                variant="primary"
-                size="sm"
-                onClick={openAuthModal}
-                data-testid="open-auth-btn"
-              >
-                <LogIn size={14} />
-                <span>Pilot Auth</span>
-              </Button>
+              <NavLink to="/login" style={{ textDecoration: 'none' }} data-testid="open-auth-btn">
+                <Button variant="primary" size="sm">
+                  <LogIn size={14} />
+                  <span>Pilot Auth</span>
+                </Button>
+              </NavLink>
             </div>
           )}
         </div>
@@ -106,3 +103,5 @@ export function Navbar() {
     </header>
   );
 }
+
+export default Navbar;
