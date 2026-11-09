@@ -7,5 +7,7 @@ export default defineConfig({
   server: {
     port: 5173,
     host: true,
+    // Запити /api/* проксуються на MKV API (npm run server)
+    proxy: { '/api': `http://localhost:${process.env.API_PORT || 4000}` },
   },
 });

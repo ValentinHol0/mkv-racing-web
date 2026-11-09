@@ -1,37 +1,51 @@
 /**
- * MKV Racing REST API Client & Protocol Dispatcher
+ * MKV Racing REST API Client (axios) & Protocol Dispatcher
  */
+import axios from 'axios';
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8080/api/v1';
+export const TOKEN_KEY = 'mkv_token';
+
+// У dev-режимі Vite проксує /api на Express-сервер (див. vite.config.js)
+const API_BASE_URL = import.meta.env.VITE_API_URL || '/api/v1';
+
+export const http = axios.create({ baseURL: API_BASE_URL, timeout: 10_000 });
+
+// Request interceptor: кожен запит автоматично отримує Bearer-токен пілота
+http.interceptors.request.use((config) => {
+  const token = localStorage.getItem(TOKEN_KEY);
+  if (token) config.headers.Authorization = `Bearer ${token}`;
+  return config;
+});
+
+// Response interceptor: 401 → токен недійсний, повідомляємо застосунок про завершення сесії
+http.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response?.status === 401 && localStorage.getItem(TOKEN_KEY)) {
+      localStorage.removeItem(TOKEN_KEY);
+      window.dispatchEvent(new Event('mkv:unauthorized'));
+    }
+    return Promise.reject(error);
+  }
+);
+
+/** Приводить будь-яку помилку axios до вигляду { status, code, message, fields }. */
+export function normalizeError(error) {
+  if (axios.isCancel(error)) return null;
+  const data = error.response?.data;
+  return {
+    status: error.response?.status ?? 0,
+    code: data?.code ?? (error.response ? 'HTTP_ERROR' : 'NETWORK'),
+    message:
+      data?.message ??
+      (error.response
+        ? `HTTP error ${error.response.status}`
+        : 'MKV API is unreachable. Start it with `npm run server`.'),
+    fields: data?.fields ?? {},
+  };
+}
 
 export const apiClient = {
-  /**
-   * Fetches the active list of AssettoServer instances.
-   */
-  async getServers() {
-    try {
-      const response = await fetch(`${API_BASE_URL}/servers`);
-      if (!response.ok) throw new Error(`HTTP error ${response.status}`);
-      return await response.json();
-    } catch {
-      // Fallback for isolated lab environment without active daemon backend
-      return null;
-    }
-  },
-
-  /**
-   * Verifies local mod SHA-256 checksums against the server whitelist.
-   */
-  async verifyChecksums(carId, trackConfig) {
-    return {
-      carId,
-      trackConfig,
-      matched: true,
-      hash: 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855',
-      status: 'CHECKSUM_PASS',
-    };
-  },
-
   /**
    * Triggers the custom browser protocol acmanager:// to launch Content Manager.
    */
@@ -41,27 +55,5 @@ export const apiClient = {
       return true;
     }
     return false;
-  },
-
-  /**
-   * Mock pilot authentication using OpenID 2.0 token / internal token.
-   */
-  async authenticatePilot(credentials) {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve({
-          success: true,
-          token: 'MKV-JWT-' + Math.random().toString(36).substring(2),
-          user: {
-            name: credentials.email ? credentials.email.split('@')[0] : 'Valentin Holomidov',
-            callsign: 'ApexPredator_UA',
-            email: credentials.email || 'pilot@mkvracing.com',
-            steamId: credentials.steamId || '76561198000000001',
-            tier: 'Level 42 Pro Tier',
-            safetyScore: 98.4,
-          },
-        });
-      }, 200);
-    });
   },
 };
