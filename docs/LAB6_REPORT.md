@@ -314,7 +314,7 @@ _Рис. 4.7 — Консоль: події допуску, кіл і резул
 
 Робота виконана в гілці `feature/business-logic-hooks`, відгалуженій від `feature/routing-navigation` (результат лабораторної №5). Зміни зафіксовано атомарними комітами та оформлено Pull Request:
 
-**PR:** _посилання буде додано після створення_
+**PR:** [#5 — Лабораторна робота №6: Бізнес-логіка та користувацькі хуки](https://github.com/ValentinHol0/mkv-racing-web/pull/5) (`feature/business-logic-hooks` → `feature/routing-navigation`)
 
 ---
 
