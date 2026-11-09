@@ -35,12 +35,33 @@
 
 ---
 
+## 🚀 Запуск (Лаб. 6: бізнес-логіка та REST API)
+
+```bash
+npm install
+npm run server     # MKV API → http://localhost:4000/api/v1
+npm run dev        # React-клієнт → http://localhost:5173 (проксі /api → :4000)
+npm run test:api   # тести бізнес-логіки (node:test)
+```
+
+Демо-акаунт пілота: кнопка **Use Demo Credentials** на сторінці `/login`
+(`pilot@mkvracing.com`, ліцензія PRO). Дані API зберігаються у `server/db.json` (створюється з seed-даних, не комітиться).
+
+| Хук                                                                                                                                                         | Призначення                                                                                  |
+| ----------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- |
+| `useFetch(url, { params, pollInterval })`                                                                                                                   | GET: `data / error / loading / refetch`, скасування через `AbortController`, polling         |
+| `useMutation(url, { method, onSuccess })`                                                                                                                   | POST/PUT/DELETE: `mutate(vars)`, `loading / error / data / reset`                            |
+| `useAuth()` / `useAuthBootstrap()`                                                                                                                          | Вхід (email/callsign), Steam OpenID, реєстрація, вихід, відновлення сесії, автологаут на 401 |
+| `useServers`, `useServer`, `useCars`, `useSelectCar`, `useVerifyChecksum`, `useJoinServer`, `useLeaderboard`, `useSubmitLap`, `useMyStats`, `useServerLogs` | Доменні хуки поверх базових                                                                  |
+
+---
+
 ## 🛠️ Запланований стек реалізації (до кінця семестру на React)
 
 - **Frontend:** React 18, Vite 5, Pure CSS Modules (без CSS-фреймворків), React Router v6.
 - **State Management:** Zustand / React Context API.
 - **Icons & Graphics:** Lucide React, Three.js / Canvas (для 3D-моделей авто), Recharts (для телеметрії).
-- **Networking:** WebSocket Client + REST API.
+- **Networking:** axios (interceptors) + власні хуки `useFetch` / `useMutation`, REST API на Express.
 
 ---
 
