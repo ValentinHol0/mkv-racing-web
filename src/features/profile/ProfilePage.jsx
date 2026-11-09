@@ -1,12 +1,15 @@
 import React from 'react';
 import { ShieldCheck, CheckCircle, Car, Key } from 'lucide-react';
-import { useAppStore } from '../../store/useAppStore';
+import { useAuth } from '../../hooks/useAuth';
+import { useMyStats } from '../../hooks/useRacing';
+import { formatLapTime, nextLicense } from '../../utils/racing';
 import { Badge } from '../../components/common/Badge';
 import { Button } from '../../components/common/Button';
 import styles from './ProfilePage.module.css';
 
 export function ProfilePage() {
-  const { user, isAuthenticated, openAuthModal } = useAppStore();
+  const { user, isAuthenticated, requireAuth } = useAuth();
+  const { data: stats } = useMyStats();
 
   const activePilot = user || {
     name: 'Valentin Holomidov',
@@ -26,12 +29,14 @@ export function ProfilePage() {
     { name: 'Pure 3.10 Weather Engine Script', verified: true },
   ];
 
-  const careerFleet = [
-    { car: 'Toyota Supra MKV (A90)', distance: '6,420 km', topSpeed: '335 km/h', wins: 28 },
-    { car: 'Porsche 911 GT3 RS (992)', distance: '4,110 km', topSpeed: '296 km/h', wins: 19 },
-    { car: 'BMW M5 CS (F90)', distance: '2,890 km', topSpeed: '305 km/h', wins: 12 },
-    { car: 'Audi R8 V10 Performance', distance: '1,400 km', topSpeed: '331 km/h', wins: 6 },
-  ];
+  // Автопарк пілота з API: кількість валідних кіл і найкращий час на кожному авто
+  const careerFleet = (stats?.byCar ?? []).map((row) => ({
+    car: row.car,
+    topSpeed: row.topSpeed,
+    distance: formatLapTime(row.bestMs),
+    laps: row.laps,
+  }));
+  const next = user ? nextLicense(user.rating) : null;
 
   return (
     <div className={styles.pageWrapper} data-testid="profile-page">
@@ -66,16 +71,19 @@ export function ProfilePage() {
           </div>
           <div className={styles.capsuleDivider} />
           <div className={styles.capsuleItem}>
-            <span className={styles.capsuleLabel}>PACE INDEX</span>
+            <span className={styles.capsuleLabel}>
+              {next ? `RATING • ${next.need} TO ${next.code}` : 'RATING • MAX LICENSE'}
+            </span>
             <span className={styles.capsuleValue} style={{ color: 'var(--color-cyan)' }}>
-              {activePilot.paceScore || 94.2}%
+              {user ? `${user.rating} RP` : `${activePilot.paceScore || 94.2}%`}
             </span>
           </div>
           <div className={styles.capsuleDivider} />
           <div className={styles.capsuleItem}>
             <span className={styles.capsuleLabel}>TOTAL LOGGED</span>
             <span className={styles.capsuleValue} style={{ color: 'var(--color-amber)' }}>
-              14,820 <span style={{ fontSize: '11px', color: 'var(--color-text-muted)' }}>km</span>
+              {stats?.totalLaps ?? 0}{' '}
+              <span style={{ fontSize: '11px', color: 'var(--color-text-muted)' }}>laps</span>
             </span>
           </div>
         </div>
@@ -106,7 +114,7 @@ export function ProfilePage() {
 
           {!isAuthenticated && (
             <div style={{ paddingTop: '8px' }}>
-              <Button variant="steam" size="sm" fullWidth onClick={openAuthModal}>
+              <Button variant="steam" size="sm" fullWidth onClick={requireAuth}>
                 <Key size={16} color="#06b6d4" />
                 <span>Re-authenticate via Steam OpenID</span>
               </Button>
@@ -122,15 +130,22 @@ export function ProfilePage() {
           </h3>
 
           <div className={styles.fleetList}>
+            {!careerFleet.length && (
+              <span className={styles.panelDesc}>
+                {isAuthenticated
+                  ? 'No valid laps yet — submit one on the Telemetry page.'
+                  : 'Sign in to load your fleet statistics.'}
+              </span>
+            )}
             {careerFleet.map((row, i) => (
               <div key={i} className={styles.fleetRow}>
                 <div>
                   <h4 className={styles.carName}>{row.car}</h4>
-                  <span className={styles.carTopSpeed}>Top Speed: {row.topSpeed}</span>
+                  <span className={styles.carTopSpeed}>Top Speed: {row.topSpeed} • Best Lap</span>
                 </div>
                 <div className={styles.fleetRight}>
                   <span className={styles.fleetDist}>{row.distance}</span>
-                  <span className={styles.fleetWins}>{row.wins} Podium Finishes</span>
+                  <span className={styles.fleetWins}>{row.laps} Valid Laps</span>
                 </div>
               </div>
             ))}

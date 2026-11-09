@@ -1,13 +1,22 @@
 import React, { useState } from 'react';
 import { Server, Filter, Radio } from 'lucide-react';
-import { useAppStore } from '../../store/useAppStore';
+import { useServers } from '../../hooks/useRacing';
+import { Alert } from '../../components/common/Alert';
 import { ServerCard } from '../dashboard/ServerCard';
 import { Badge } from '../../components/common/Badge';
 import styles from './ServersPage.module.css';
 
 export function ServersPage() {
-  const { servers } = useAppStore();
+  const { data: servers, error } = useServers();
   const [regionFilter, setRegionFilter] = useState('ALL');
+
+  // Агрегована статистика кластера рахується з live-даних API
+  const totalClients = servers.reduce((sum, s) => sum + s.clients, 0);
+  const totalSlots = servers.reduce((sum, s) => sum + s.maxSlots, 0);
+  const online = servers.filter((s) => s.status === 'online');
+  const avgPing = online.length
+    ? Math.round(online.reduce((sum, s) => sum + s.ping, 0) / online.length)
+    : 0;
 
   const filteredServers = servers.filter((srv) => {
     if (regionFilter === 'ALL') return true;
@@ -69,14 +78,16 @@ export function ServersPage() {
       <div className={styles.statsGrid}>
         <div className={styles.statCard}>
           <span className={styles.statLabel}>TOTAL ONLINE PILOTS</span>
-          <span className={styles.statValue}>80 / 240</span>
+          <span className={styles.statValue}>
+            {totalClients} / {totalSlots}
+          </span>
           <span className={styles.statSub} style={{ color: 'var(--color-emerald)' }}>
             Overbooking max capacity active
           </span>
         </div>
         <div className={styles.statCard}>
           <span className={styles.statLabel}>AVERAGE LATENCY</span>
-          <span className={`${styles.statValue} ${styles.statValueEmerald}`}>25 ms</span>
+          <span className={`${styles.statValue} ${styles.statValueEmerald}`}>{avgPing} ms</span>
           <span className={styles.statSub}>Direct EU/UA peering</span>
         </div>
         <div className={styles.statCard}>
@@ -90,6 +101,8 @@ export function ServersPage() {
           <span className={styles.statSub}>Zero checksum mismatches</span>
         </div>
       </div>
+
+      {error && <Alert>{error.message}</Alert>}
 
       {/* Server List */}
       <div className={styles.serverList}>

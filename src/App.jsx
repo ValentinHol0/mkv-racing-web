@@ -12,9 +12,16 @@ import { StatisticsPage } from './features/statistics/StatisticsPage';
 import { ProfilePage } from './features/profile/ProfilePage';
 import { LogsPage } from './features/logs/LogsPage';
 import { NotFoundPage } from './pages/NotFoundPage';
+import { useAuthBootstrap } from './hooks/useAuth';
+import { useWebSocket } from './hooks/useWebSocket';
 import styles from './App.module.css';
 
 export function App() {
+  // Відновлення сесії пілота за токеном + автологаут на 401
+  useAuthBootstrap();
+  // Симуляція 40 Hz телеметрії для віджетів Dashboard / Telemetry
+  useWebSocket();
+
   return (
     <div className={styles.appWrapper}>
       <Navbar />
