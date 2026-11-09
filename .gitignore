@@ -29,3 +29,6 @@ build/
 .cache
 cypress/screenshots/
 cypress/videos/
+
+# MKV API runtime data
+server/db.json
