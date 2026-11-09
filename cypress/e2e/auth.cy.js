@@ -1,5 +1,7 @@
 describe('Pilot Authentication End-to-End Workflow', () => {
+  // E2E-тести виконуються проти запущеного MKV API (npm run server) з seed-даними
   beforeEach(() => {
+    cy.clearLocalStorage();
     cy.visit('/');
   });
 
@@ -18,14 +20,14 @@ describe('Pilot Authentication End-to-End Workflow', () => {
     cy.get('[data-testid="auth-modal"]').should('not.exist');
     cy.contains('ONLINE').should('be.visible');
     cy.contains('ApexPredator_UA').should('be.visible');
-    cy.contains('Level 42 Pro Tier').should('be.visible');
+    cy.contains(/Level \d+ Pro Tier/).should('be.visible');
   });
 
   it('authenticates with credentials and logs out cleanly', () => {
     cy.get('[data-testid="open-auth-btn"]').click();
 
-    cy.get('[data-testid="email-input"]').type('valentingolomidov@gmail.com');
-    cy.get('[data-testid="password-input"]').type('SuperSecretKey2026');
+    cy.get('[data-testid="email-input"]').type('pilot@mkvracing.com');
+    cy.get('[data-testid="password-input"]').type('TelemetryToken2026!');
     cy.get('[data-testid="login-submit-btn"]').click();
 
     cy.contains('ONLINE').should('be.visible');

@@ -11,17 +11,23 @@ import {
 import { useAppStore } from '../../store/useAppStore';
 import { ServerCard } from './ServerCard';
 import { Badge } from '../../components/common/Badge';
+import { Alert } from '../../components/common/Alert';
+import { useServers, useLeaderboard } from '../../hooks/useRacing';
+import { formatLapTime } from '../../utils/racing';
 import styles from './DashboardPage.module.css';
 
 export function DashboardPage() {
-  const { servers, telemetry } = useAppStore();
+  const { telemetry } = useAppStore();
+  // Дані з MKV API: сервери оновлюються кожні 5 с, лідерборд — кожні 10 с
+  const { data: servers, error: serversError, loading: serversLoading } = useServers();
+  const { data: board } = useLeaderboard('srp-tokyo-01');
+  const shuto = servers.find((s) => s.id === 'srp-tokyo-01');
 
-  const leaderboard = [
-    { rank: 1, pilot: 'ApexPredator_UA', car: 'Toyota Supra MKV', lapTime: '3:48.210' },
-    { rank: 2, pilot: 'Midnight_Rider_JP', car: 'Porsche 911 GT3 RS', lapTime: '3:49.004' },
-    { rank: 3, pilot: 'GhostRunner_Tbilisi', car: 'BMW M5 CS', lapTime: '3:51.450' },
-    { rank: 4, pilot: 'BayshoreDrifter', car: 'Audi R8 V10', lapTime: '3:53.110' },
-  ];
+  const leaderboard = board.slice(0, 4).map((row) => ({
+    rank: row.rank,
+    pilot: row.pilot,
+    lapTime: formatLapTime(row.timeMs),
+  }));
 
   return (
     <div className={styles.pageWrapper} data-testid="dashboard-page">
@@ -73,6 +79,10 @@ export function DashboardPage() {
           </h2>
           <span className={styles.sectionNote}>Auto-ping refresh every 5s</span>
         </div>
+        {serversError && <Alert>{serversError.message}</Alert>}
+        {serversLoading && !servers.length && (
+          <span className={styles.sectionNote}>Fetching cluster telemetry...</span>
+        )}
         <div className={styles.serverGrid}>
           {servers.map((srv) => (
             <ServerCard key={srv.id} server={srv} />
@@ -118,7 +128,7 @@ export function DashboardPage() {
               Live Radar (300m Bubble)
             </h3>
             <Badge variant="online" dot>
-              48 BLIPS
+              {shuto ? shuto.clients : '—'} BLIPS
             </Badge>
           </div>
           <div className={styles.radarContainer}>
@@ -142,6 +152,7 @@ export function DashboardPage() {
             <span className={styles.sectionNote}>Loop Lap</span>
           </div>
           <div className={styles.leaderboardList}>
+            {!leaderboard.length && <span className={styles.sectionNote}>No valid laps yet</span>}
             {leaderboard.map((item) => (
               <div key={item.rank} className={styles.leaderboardRow}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>

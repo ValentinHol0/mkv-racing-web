@@ -1,27 +1,46 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { Mail, Lock, Key, ShieldCheck, Cpu, Zap, CheckCircle2, ArrowLeft } from 'lucide-react';
+import {
+  Mail,
+  Lock,
+  Key,
+  ShieldCheck,
+  Cpu,
+  Zap,
+  CheckCircle2,
+  ArrowLeft,
+  User,
+} from 'lucide-react';
 import { Input } from '../../components/common/Input';
 import { Button } from '../../components/common/Button';
 import { Badge } from '../../components/common/Badge';
-import { useAppStore } from '../../store/useAppStore';
+import { Alert } from '../../components/common/Alert';
+import { useAuth } from '../../hooks/useAuth';
 import styles from './AuthPage.module.css';
 
 export function AuthPage() {
   const navigate = useNavigate();
-  const { login } = useAppStore();
+  const { signIn, signInWithSteam, register } = useAuth();
 
+  const [mode, setMode] = useState('login'); // 'login' | 'register'
   const [email, setEmail] = useState('');
+  const [callsign, setCallsign] = useState('');
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState({});
+  const [serverError, setServerError] = useState(null);
   const [loading, setLoading] = useState(false);
+  const isRegister = mode === 'register';
 
   const validate = () => {
     const errs = {};
     if (!email.trim()) {
       errs.email = 'Pilot email or callsign is required';
-    } else if (!/\S+@\S+\.\S+/.test(email) && !email.includes('_')) {
+    } else if (!/\S+@\S+\.\S+/.test(email) && (isRegister || !email.includes('_'))) {
       errs.email = 'Enter a valid email address or callsign';
+    }
+
+    if (isRegister && !/^[A-Za-z0-9_]{3,20}$/.test(callsign)) {
+      errs.callsign = 'Callsign: 3-20 chars, letters, digits or _';
     }
 
     if (!password) {
@@ -34,48 +53,41 @@ export function AuthPage() {
     return Object.keys(errs).length === 0;
   };
 
+  // Запит до API через хук useAuth; помилки валідації сервера підсвічують поля форми
+  const runAuth = async (request) => {
+    setLoading(true);
+    setServerError(null);
+    try {
+      await request();
+      navigate('/');
+    } catch (err) {
+      setErrors((prev) => ({ ...prev, ...err.fields }));
+      setServerError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!validate()) return;
-
-    setLoading(true);
-    setTimeout(() => {
-      const pilotData = {
-        name: email.split('@')[0],
-        email,
-        callsign: email.includes('@') ? email.split('@')[0].toUpperCase() : email,
-        tier: 'Level 42 Pro Tier',
-        safetyScore: 98.4,
-      };
-
-      login(pilotData);
-      setLoading(false);
-      navigate('/dashboard');
-    }, 300);
+    runAuth(() => (isRegister ? register({ email, callsign, password }) : signIn(email, password)));
   };
 
-  const handleSteamLogin = () => {
-    setLoading(true);
-    setTimeout(() => {
-      const steamUser = {
-        name: 'Valentin Holomidov',
-        email: 'valentingolomidov@gmail.com',
-        callsign: 'ApexPredator_UA',
-        steamId: '76561198000000001',
-        tier: 'Level 42 Pro Tier',
-        safetyScore: 98.4,
-      };
-
-      login(steamUser);
-      setLoading(false);
-      navigate('/dashboard');
-    }, 250);
-  };
+  const handleSteamLogin = () => runAuth(() => signInWithSteam());
 
   const handleQuickFill = () => {
+    setMode('login');
     setEmail('pilot@mkvracing.com');
     setPassword('TelemetryToken2026!');
     setErrors({});
+    setServerError(null);
+  };
+
+  const toggleMode = () => {
+    setMode(isRegister ? 'login' : 'register');
+    setErrors({});
+    setServerError(null);
   };
 
   return (
@@ -152,9 +164,13 @@ export function AuthPage() {
         {/* Right Authentication Form */}
         <div className={styles.formSection}>
           <div className={styles.formHeader}>
-            <h2 className={styles.formTitle}>COCKPIT ACCESS</h2>
+            <h2 className={styles.formTitle}>
+              {isRegister ? 'NEW PILOT LICENSE' : 'COCKPIT ACCESS'}
+            </h2>
             <p className={styles.formSubtitle}>
-              Authenticate your pilot account to join servers and access private garage telemetry.
+              {isRegister
+                ? 'Register a pilot account. New pilots start with a Rookie license (class B cars).'
+                : 'Authenticate your pilot account to join servers and access private garage telemetry.'}
             </p>
           </div>
 
@@ -187,6 +203,14 @@ export function AuthPage() {
               >
                 Use Demo Credentials
               </button>
+              <button
+                type="button"
+                className={styles.quickFillBtn}
+                onClick={toggleMode}
+                data-testid="toggle-register-btn"
+              >
+                {isRegister ? 'I already have an account' : 'Create Pilot Account'}
+              </button>
             </div>
 
             <Input
@@ -201,6 +225,20 @@ export function AuthPage() {
               data-testid="page-email-input"
             />
 
+            {isRegister && (
+              <Input
+                id="auth-page-callsign"
+                label="Pilot Callsign"
+                type="text"
+                placeholder="e.g. ApexPredator_UA"
+                value={callsign}
+                onChange={(e) => setCallsign(e.target.value)}
+                error={errors.callsign}
+                icon={User}
+                data-testid="page-callsign-input"
+              />
+            )}
+
             <Input
               id="auth-page-password"
               label="Security Token / Passkey"
@@ -212,6 +250,8 @@ export function AuthPage() {
               icon={Lock}
               data-testid="page-password-input"
             />
+
+            {serverError && <Alert data-testid="page-auth-error">{serverError}</Alert>}
 
             <div className={styles.securityNote}>
               <CheckCircle2 size={14} color="#10b981" />
@@ -228,7 +268,13 @@ export function AuthPage() {
                 data-testid="page-submit-login-btn"
               >
                 <ShieldCheck size={16} />
-                <span>{loading ? 'Verifying Credentials...' : 'Authorize Cockpit Session'}</span>
+                <span>
+                  {loading
+                    ? 'Verifying Credentials...'
+                    : isRegister
+                      ? 'Register Pilot Account'
+                      : 'Authorize Cockpit Session'}
+                </span>
               </Button>
 
               <div className={styles.backLinkContainer}>

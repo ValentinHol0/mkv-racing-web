@@ -11,13 +11,13 @@ import {
   LogOut,
   ShieldCheck,
 } from 'lucide-react';
-import { useAppStore } from '../../store/useAppStore';
+import { useAuth } from '../../hooks/useAuth';
 import { Button } from '../common/Button';
 import { Badge } from '../common/Badge';
 import styles from './Navbar.module.css';
 
 export function Navbar() {
-  const { isAuthenticated, user, logout } = useAppStore();
+  const { isAuthenticated, user, signOut } = useAuth();
 
   const navLinks = [
     { to: '/', label: 'Dashboard', icon: Gauge },
@@ -79,7 +79,7 @@ export function Navbar() {
               <Button
                 variant="secondary"
                 size="sm"
-                onClick={logout}
+                onClick={signOut}
                 title="Log out"
                 data-testid="logout-btn"
               >

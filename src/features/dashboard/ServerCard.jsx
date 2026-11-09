@@ -1,19 +1,24 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Server, Users, Activity, CloudRain, ShieldCheck, ExternalLink, Cpu } from 'lucide-react';
 import { Button } from '../../components/common/Button';
 import { Badge } from '../../components/common/Badge';
+import { JoinServerModal } from '../servers/JoinServerModal';
+import { useAuth } from '../../hooks/useAuth';
 import styles from './ServerCard.module.css';
 
 export function ServerCard({ server, onConnect }) {
   const navigate = useNavigate();
+  const { requireAuth } = useAuth();
+  const [isJoinOpen, setJoinOpen] = useState(false);
   if (!server) return null;
 
+  // Підключення лише для авторизованого пілота: гостю відкривається вікно входу
   const handleConnect = () => {
     if (onConnect) {
       onConnect(server);
-    } else if (typeof window !== 'undefined' && server.joinUrl) {
-      window.location.href = server.joinUrl;
+    } else if (requireAuth()) {
+      setJoinOpen(true);
     }
   };
 
@@ -120,6 +125,8 @@ export function ServerCard({ server, onConnect }) {
           </Button>
         </div>
       </div>
+
+      {isJoinOpen && <JoinServerModal server={server} onClose={() => setJoinOpen(false)} />}
     </div>
   );
 }

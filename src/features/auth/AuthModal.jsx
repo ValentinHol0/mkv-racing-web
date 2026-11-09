@@ -3,16 +3,20 @@ import { Mail, Lock, Key, ShieldCheck } from 'lucide-react';
 import { Modal } from '../../components/common/Modal';
 import { Input } from '../../components/common/Input';
 import { Button } from '../../components/common/Button';
+import { Alert } from '../../components/common/Alert';
 import { useAppStore } from '../../store/useAppStore';
+import { useAuth } from '../../hooks/useAuth';
 import styles from './AuthModal.module.css';
 
 export function AuthModal({ isOpen, onClose, onLoginSuccess }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState({});
+  const [serverError, setServerError] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  const { isAuthModalOpen, closeAuthModal, login } = useAppStore();
+  const { isAuthModalOpen, closeAuthModal } = useAppStore();
+  const { signIn, signInWithSteam } = useAuth();
 
   const openState = isOpen !== undefined ? isOpen : isAuthModalOpen;
   const handleClose = onClose || closeAuthModal;
@@ -35,49 +39,28 @@ export function AuthModal({ isOpen, onClose, onLoginSuccess }) {
     return Object.keys(errs).length === 0;
   };
 
+  // Спільний обробник: запит до API через useAuth, помилку сервера показуємо у формі
+  const runAuth = async (request) => {
+    setLoading(true);
+    setServerError(null);
+    try {
+      const user = await request();
+      onLoginSuccess?.(user);
+      handleClose();
+    } catch (err) {
+      setServerError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!validate()) return;
-
-    setLoading(true);
-    setTimeout(() => {
-      const userData = {
-        name: email.split('@')[0],
-        email,
-        callsign: 'ApexPredator_UA',
-        tier: 'Level 42 Pro Tier',
-        safetyScore: 98.4,
-      };
-
-      if (onLoginSuccess) {
-        onLoginSuccess(userData);
-      } else {
-        login(userData);
-      }
-
-      setLoading(false);
-      handleClose();
-    }, 250);
+    runAuth(() => signIn(email, password));
   };
 
-  const handleSteamLogin = () => {
-    const steamUser = {
-      name: 'Valentin Holomidov',
-      email: 'valentingolomidov@gmail.com',
-      callsign: 'ApexPredator_UA',
-      steamId: '76561198000000001',
-      tier: 'Level 42 Pro Tier',
-      safetyScore: 98.4,
-    };
-
-    if (onLoginSuccess) {
-      onLoginSuccess(steamUser);
-    } else {
-      login(steamUser);
-    }
-
-    handleClose();
-  };
+  const handleSteamLogin = () => runAuth(() => signInWithSteam());
 
   return (
     <Modal isOpen={openState} onClose={handleClose} title="MKV RACING PILOT AUTHENTICATION">
@@ -92,6 +75,7 @@ export function AuthModal({ isOpen, onClose, onLoginSuccess }) {
           fullWidth
           size="md"
           onClick={handleSteamLogin}
+          disabled={loading}
           data-testid="steam-sso-btn"
         >
           <Key size={16} color="#06b6d4" />
@@ -129,6 +113,8 @@ export function AuthModal({ isOpen, onClose, onLoginSuccess }) {
             icon={Lock}
             data-testid="password-input"
           />
+
+          {serverError && <Alert data-testid="auth-error">{serverError}</Alert>}
 
           <div className={styles.formActions}>
             <Button

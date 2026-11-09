@@ -1,25 +1,48 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Car, CheckCircle2, Zap, Gauge, RotateCw, Palette, ShieldCheck } from 'lucide-react';
 import { useAppStore } from '../../store/useAppStore';
 import { Button } from '../../components/common/Button';
 import { Badge } from '../../components/common/Badge';
+import { Alert } from '../../components/common/Alert';
+import { useAuth } from '../../hooks/useAuth';
+import { useCars, useSelectCar, useVerifyChecksum } from '../../hooks/useRacing';
+import { carBlockReason, localChecksum } from '../../utils/racing';
 import styles from './GaragePage.module.css';
 
 export function GaragePage() {
-  const { cars, selectedCarId, selectedLivery, setSelectedCarId, setSelectedLivery } =
-    useAppStore();
+  const { selectedCarId, selectedLivery, setSelectedCarId, setSelectedLivery } = useAppStore();
+  const { user, isAuthenticated, requireAuth } = useAuth();
+  const { data: cars, error: carsError, loading } = useCars();
+  const selectCar = useSelectCar();
+  const verify = useVerifyChecksum();
 
-  const [isVerifying, setIsVerifying] = useState(false);
-  const [verifiedSuccess, setVerifiedSuccess] = useState(true);
+  if (loading && !cars.length) {
+    return <div className={styles.pageWrapper}>Loading fleet catalog...</div>;
+  }
+  if (carsError) {
+    return (
+      <div className={styles.pageWrapper}>
+        <Alert>{carsError.message}</Alert>
+      </div>
+    );
+  }
 
   const selectedCar = cars.find((c) => c.id === selectedCarId) || cars[0];
+  const livery = selectedLivery || selectedCar.liveries[0];
+  // Гість бачить усі авто; для пілота перевіряємо, чи ліцензія відкриває клас
+  const blockReason = isAuthenticated
+    ? carBlockReason(selectedCar, { allowedClasses: user.allowedClasses })
+    : null;
+  const isRaceCar = user?.selectedCarId === selectedCar.id;
+  const verifiedSuccess = verify.data ? verify.data.matched : true;
 
   const handleVerifyChecksum = () => {
-    setIsVerifying(true);
-    setTimeout(() => {
-      setIsVerifying(false);
-      setVerifiedSuccess(true);
-    }, 400);
+    verify.mutate({ carId: selectedCar.id, checksum: localChecksum(selectedCar) }).catch(() => {});
+  };
+
+  const handleSelectForRacing = () => {
+    if (!requireAuth()) return;
+    selectCar.mutate({ carId: selectedCar.id }).catch(() => {});
   };
 
   return (
@@ -43,9 +66,14 @@ export function GaragePage() {
           </p>
         </div>
 
-        <Button variant="secondary" size="sm" onClick={handleVerifyChecksum} disabled={isVerifying}>
-          <RotateCw size={14} className={isVerifying ? 'animate-spin' : ''} />
-          <span>{isVerifying ? 'Verifying Hashes...' : 'Re-verify SHA-256'}</span>
+        <Button
+          variant="secondary"
+          size="sm"
+          onClick={handleVerifyChecksum}
+          disabled={verify.loading}
+        >
+          <RotateCw size={14} className={verify.loading ? 'animate-spin' : ''} />
+          <span>{verify.loading ? 'Verifying Hashes...' : 'Re-verify SHA-256'}</span>
         </Button>
       </div>
 
@@ -59,13 +87,18 @@ export function GaragePage() {
               return (
                 <button
                   key={car.id}
-                  onClick={() => setSelectedCarId(car.id)}
+                  onClick={() => {
+                    setSelectedCarId(car.id);
+                    selectCar.reset();
+                    verify.reset();
+                  }}
                   className={`${styles.carItem} ${isSelected ? styles.carItemActive : ''}`}
                 >
                   <div>
                     <h4 className={styles.carItemTitle}>{car.name}</h4>
                     <span className={styles.carItemSubtitle}>
-                      {car.role} • {car.power}
+                      {car.role} • {car.power} • Class {car.carClass}
+                      {user?.selectedCarId === car.id ? ' • RACE CAR' : ''}
                     </span>
                   </div>
                   {isSelected && <CheckCircle2 size={16} color="#e63946" />}
@@ -92,17 +125,18 @@ export function GaragePage() {
                 </span>
                 <h2 className={styles.stageCarName}>{selectedCar.name}</h2>
                 <span className={styles.stageLiveryLabel}>
-                  Active Livery:{' '}
-                  <strong className={styles.stageLiveryValue}>{selectedLivery}</strong>
+                  Active Livery: <strong className={styles.stageLiveryValue}>{livery}</strong>
                 </span>
               </div>
             </div>
 
             <div className={styles.stageChecksumPos}>
-              {verifiedSuccess && (
+              {verifiedSuccess ? (
                 <Badge variant="online" dot>
                   SHA-256 VALIDATED
                 </Badge>
+              ) : (
+                <Badge variant="warning">SHA-256 MISMATCH</Badge>
               )}
             </div>
           </div>
@@ -114,15 +148,13 @@ export function GaragePage() {
               Livery & Skin Selection
             </h4>
             <div className={styles.liveriesRow}>
-              {selectedCar.liveries.map((livery) => (
+              {selectedCar.liveries.map((item) => (
                 <button
-                  key={livery}
-                  onClick={() => setSelectedLivery(livery)}
-                  className={`${styles.liveryBtn} ${
-                    selectedLivery === livery ? styles.liveryBtnActive : ''
-                  }`}
+                  key={item}
+                  onClick={() => setSelectedLivery(item)}
+                  className={`${styles.liveryBtn} ${livery === item ? styles.liveryBtnActive : ''}`}
                 >
-                  {livery}
+                  {item}
                 </button>
               ))}
             </div>
@@ -167,14 +199,36 @@ export function GaragePage() {
               </div>
             </div>
 
+            {(selectCar.error || verify.error) && (
+              <Alert>{(selectCar.error || verify.error).message}</Alert>
+            )}
+            {selectCar.data && isRaceCar && (
+              <Alert variant="success">
+                {selectedCar.name} is now your race car for server sessions.
+              </Alert>
+            )}
+            {blockReason && <Alert>{blockReason}</Alert>}
+
             <div className={styles.panelFooter}>
               <div className={styles.checksumNote}>
                 <ShieldCheck size={16} color="#10b981" />
-                <span>SHA-256: e3b0c44298fc1c149afbf4c8996fb92427...</span>
+                <span>SHA-256: {selectedCar.sha256.slice(0, 34)}...</span>
               </div>
-              <Button variant="primary" size="md">
+              <Button
+                variant="primary"
+                size="md"
+                onClick={handleSelectForRacing}
+                disabled={isRaceCar || Boolean(blockReason) || selectCar.loading}
+                data-testid="select-car-btn"
+              >
                 <Zap size={16} />
-                <span>Select for Shuto Server</span>
+                <span>
+                  {isRaceCar
+                    ? 'Selected for Racing'
+                    : selectCar.loading
+                      ? 'Saving...'
+                      : 'Select for Shuto Server'}
+                </span>
               </Button>
             </div>
           </div>
